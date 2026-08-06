@@ -1,0 +1,52 @@
+from sklearn.datasets import load_iris
+from sklearn.mixture import GaussianMixture
+from sklearn.metrics import accuracy_score, confusion_matrix
+from scipy.stats import mode
+import numpy as np
+
+iris = load_iris()
+
+X = iris.data
+y = iris.target
+
+print("Number of Samples :", X.shape[0])
+print("Number of Features:", X.shape[1])
+
+model = GaussianMixture(
+    n_components=3,
+    random_state=42
+)
+
+model.fit(X)
+
+y_pred = model.predict(X)
+
+labels = np.zeros_like(y_pred)
+
+for i in range(3):
+    mask = (y_pred == i)
+    if np.any(mask):
+        labels[mask] = mode(y[mask], keepdims=True).mode[0]
+
+print("\nExpectation Maximization Model Created Successfully!")
+
+print("\nConfusion Matrix")
+print(confusion_matrix(y, labels))
+
+print("\nAccuracy")
+print(accuracy_score(y, labels))
+
+print("\nEnter a New Flower Sample")
+
+sl = float(input("Sepal Length (cm): "))
+sw = float(input("Sepal Width (cm): "))
+pl = float(input("Petal Length (cm): "))
+pw = float(input("Petal Width (cm): "))
+
+sample = [[sl, sw, pl, pw]]
+
+cluster = model.predict(sample)[0]
+
+mapped_label = mode(y[y_pred == cluster], keepdims=True).mode[0]
+
+print("\nPredicted Class :", iris.target_names[mapped_label])

@@ -1,0 +1,41 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+import matplotlib.pyplot as plt
+filename = input(r"C:\Users\geeth\Downloads\play_tennis.csv")
+data = pd.read_csv(filename)
+print("\nDataset:")
+data = data.loc[:, ~data.columns.str.contains("^Unnamed")]
+print(data)
+encoders = {}
+for column in data.columns:
+    le = LabelEncoder()
+    data[column] = le.fit_transform(data[column])
+    encoders[column] = le
+X = data.iloc[:, :-1]
+y = data.iloc[:, -1]
+clf = DecisionTreeClassifier(criterion='entropy')
+clf.fit(X, y)
+print("\nDecision Tree Model Created Successfully!")
+plt.figure(figsize=(12,8))
+plot_tree(
+    clf,
+    feature_names=X.columns,
+    class_names=encoders[data.columns[-1]].classes_,
+    filled=True
+)
+plt.show()
+print("\nEnter a New Sample")
+sample = []
+for column in X.columns:
+    print(f"{column} values:",
+          list(encoders[column].classes_))
+    value = input(f"Enter {column}: ")
+    sample.append(encoders[column].transform([value])[0])
+import pandas as pd
+
+sample_df = pd.DataFrame([sample], columns=X.columns)
+
+prediction = clf.predict(sample_df)
+result = encoders[data.columns[-1]].inverse_transform(prediction)
+print("\nPrediction:", result[0])

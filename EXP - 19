@@ -1,0 +1,48 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+
+data = {
+    "Age": [25, 35, 45, 23, 52, 40, 29, 48, 33, 55,
+            27, 38, 46, 31, 50],
+    "Income": [25000, 50000, 80000, 22000, 90000, 65000, 30000,
+               85000, 45000, 95000, 28000, 60000, 75000, 40000, 88000],
+    "CreditScore": [600, 700, 750, 580, 800, 720, 620, 780,
+                    690, 820, 610, 710, 760, 680, 790],
+    "LoanAmount": [100000, 200000, 300000, 80000, 400000, 250000,
+                   120000, 350000, 180000, 450000, 100000, 220000,
+                   300000, 160000, 380000],
+    "LoanApproved": [0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+                     0, 1, 1, 0, 1]
+}
+
+df = pd.DataFrame(data)
+
+X = df[["Age", "Income", "CreditScore", "LoanAmount"]]
+
+y = df["LoanApproved"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+model = GaussianNB()
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("m.polireddy,192325056")
+print("Naive Bayes Bank Loan Prediction")
+print("Accuracy:", round(accuracy_score(y_test, y_pred) * 100, 2), "%")
+
+new_applicant = [[35, 55000, 720, 200000]]
+
+prediction = model.predict(new_applicant)
+
+
+if prediction[0] == 1:
+    print("Loan Prediction: APPROVED")
+else:
+    print("Loan Prediction: NOT APPROVED")

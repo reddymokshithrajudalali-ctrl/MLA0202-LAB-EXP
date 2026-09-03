@@ -1,0 +1,45 @@
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# Create sample mobile dataset
+data = {
+    "RAM": [2, 3, 4, 6, 8, 12, 4, 6, 8, 12],
+    "Battery": [2500, 3000, 3500, 4000, 4500, 5000, 3500, 4500, 5000, 5500],
+    "Storage": [32, 32, 64, 64, 128, 256, 64, 128, 256, 512],
+    "Camera": [8, 12, 16, 20, 32, 48, 16, 32, 48, 64],
+    "Price_Range": [0, 0, 1, 1, 2, 3, 1, 2, 3, 3]
+}
+print("m.polireddy,192325056")
+
+df = pd.DataFrame(data)
+
+# Input and output
+X = df[["RAM", "Battery", "Storage", "Camera"]]
+y = df["Price_Range"]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Create model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Train
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+
+# Accuracy
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# Predict a new mobile
+new_mobile = [[8, 5000, 256, 48]]
+prediction = model.predict(new_mobile)
+
+print("Predicted Price Range:", prediction[0])

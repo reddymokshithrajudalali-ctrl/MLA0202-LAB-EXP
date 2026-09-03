@@ -1,0 +1,13 @@
+import numpy as np
+
+area = np.array([800, 1000, 1200, 1500, 1800])
+price = np.array([150000, 190000, 230000, 300000, 350000])
+
+m = np.sum((area-area.mean())*(price-price.mean())) / np.sum((area-area.mean())**2)
+b = price.mean() - m*area.mean()
+
+house = 1400
+prediction = m*house + b
+print("POLIREDDY 192325056")
+print("reddy\AppData\Local\Programs\Microsoft VS Code>")
+print("Predicted House Price:", prediction)

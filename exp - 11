@@ -1,0 +1,33 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+credit_score = np.array([350, 450, 520, 580, 620, 680, 720, 760, 800, 850])
+
+# 0 = Poor, 1 = Average, 2 = Good
+def classify(score):
+    if score < 580:
+        return 0
+    elif score < 670:
+        return 1
+    else:
+        return 2
+
+result = np.array([classify(x) for x in credit_score])
+print("polireddy 192325056")
+print("Credit Scores:", credit_score)
+print("Classification:", result)
+
+for score, result in zip(credit_score, result):
+    if result == 0:
+        print(score, "-> Poor")
+    elif result == 1:
+        print(score, "-> Average")
+    else:
+        print(score, "-> Good")
+
+plt.scatter(credit_score, result)
+plt.xlabel("Credit Score")
+plt.ylabel("Class")
+plt.title("Credit Score Classification")
+plt.yticks([0, 1, 2], ["Poor", "Average", "Good"])
+plt.show()
